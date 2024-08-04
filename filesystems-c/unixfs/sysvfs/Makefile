@@ -26,7 +26,7 @@ CFLAGS_OSXFUSE += -D_DARWIN_USE_64_BIT_INODE
 
 CFLAGS_EXTRA = -Wall -Werror -g $(CFLAGS)
 
-LIBS = -losxfuse
+LIBS = -losxfuse.2
 
 all: $(TARGETS)
 

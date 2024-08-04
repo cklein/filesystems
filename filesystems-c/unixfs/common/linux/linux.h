@@ -283,7 +283,7 @@ static inline void __set_bit(int nr, volatile unsigned long *addr)
 {
     asm volatile("bts %1,%0" : ADDR : "Ir" (nr) : "memory");
 }
-#elif defined(__ppc__) || defined(__ppc64__)
+#elif defined(__arm64__) || defined(__ppc__) || defined(__ppc64__)
 static inline void __set_bit(int nr, volatile unsigned long *addr)
 {
     *addr |= (1L << nr);

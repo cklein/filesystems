@@ -26,7 +26,7 @@ CFLAGS_OSXFUSE += -I$(UNIXFS) -I$(LINUX) -I$(LINUX_KERNEL)/include
 
 CFLAGS_EXTRA = -Wall -Werror -g $(CFLAGS)
 
-LIBS = -losxfuse
+LIBS = -losxfuse.2
 
 all: $(TARGETS)
 

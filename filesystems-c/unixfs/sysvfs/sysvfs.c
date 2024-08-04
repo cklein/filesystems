@@ -47,8 +47,15 @@ detected_xenix(struct sysv_sb_info* sbi)
     sbi->s_sb_total_free_inodes = &sbd2->s_tinode;
     sbi->s_bcache_count = &sbd1->s_nfree;
     sbi->s_bcache = &sbd1->s_free[0];
-    sbi->s_free_blocks = &sbd2->s_tfree;
-    sbi->s_sb_time = &sbd2->s_time;
+
+    sysv_zone_t temp_s_tfree = sbd2->s_tfree;
+    sysv_zone_t *ptr_s_tfree = &temp_s_tfree;
+    sbi->s_free_blocks = ptr_s_tfree;
+
+    __fs32 temp_s_time = sbd2->s_time;
+    __fs32 *ptr_s_time = &temp_s_time;
+    sbi->s_sb_time = ptr_s_time;
+
     sbi->s_firstdatazone = fs16_to_host(sbi->s_bytesex, sbd1->s_isize);
     sbi->s_nzones = fs32_to_host(sbi->s_bytesex, sbd1->s_fsize);
 }
@@ -104,8 +111,15 @@ detected_sysv2(struct sysv_sb_info* sbi)
     sbi->s_sb_total_free_inodes = &sbd->s_tinode;
     sbi->s_bcache_count = &sbd->s_nfree;
     sbi->s_bcache = &sbd->s_free[0];
-    sbi->s_free_blocks = &sbd->s_tfree;
-    sbi->s_sb_time = &sbd->s_time;
+
+    sysv_zone_t temp_s_tfree = sbd->s_tfree;
+    sysv_zone_t *ptr_s_tfree = &temp_s_tfree;
+    sbi->s_free_blocks = ptr_s_tfree;
+
+    __fs32 temp_s_time = sbd->s_time;
+    __fs32 *ptr_s_time = &temp_s_time;
+    sbi->s_sb_time = ptr_s_time;
+
     sbi->s_sb_state = &sbd->s_state;
     sbi->s_firstdatazone = fs16_to_host(sbi->s_bytesex, sbd->s_isize);
     sbi->s_nzones = fs32_to_host(sbi->s_bytesex, sbd->s_fsize);
@@ -129,8 +143,15 @@ detected_coherent(struct sysv_sb_info* sbi)
     sbi->s_sb_total_free_inodes = &sbd->s_tinode;
     sbi->s_bcache_count = &sbd->s_nfree;
     sbi->s_bcache = &sbd->s_free[0];
-    sbi->s_free_blocks = &sbd->s_tfree;
-    sbi->s_sb_time = &sbd->s_time;
+
+    sysv_zone_t temp_s_tfree = sbd->s_tfree;
+    sysv_zone_t *ptr_s_tfree = &temp_s_tfree;
+    sbi->s_free_blocks = ptr_s_tfree;
+
+    __fs32 temp_s_time = sbd->s_time;
+    __fs32 *ptr_s_time = &temp_s_time;
+    sbi->s_sb_time = ptr_s_time;
+
     sbi->s_firstdatazone = fs16_to_host(sbi->s_bytesex, sbd->s_isize);
     sbi->s_nzones = fs32_to_host(sbi->s_bytesex, sbd->s_fsize);
 }
