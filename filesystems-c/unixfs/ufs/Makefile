@@ -29,7 +29,7 @@ CFLAGS_OSXFUSE += -I$(UNIXFS)
 
 CFLAGS_EXTRA = -Wall -Werror -g $(CFLAGS)
 
-LIBS = -losxfuse
+LIBS = -losxfuse.2
 
 all: $(TARGETS)
 

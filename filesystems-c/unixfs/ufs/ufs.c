@@ -355,11 +355,8 @@ ufs_read_cylinder_structures(struct super_block* sb)
     unsigned char* base;
     unsigned char* space;
     unsigned size, blks, i;
-    struct ufs_super_block_third* usb3;
 
     UFSD("ENTER\n");
-
-    usb3 = ubh_get_usb_third(uspi);
 
     /* Read cs structures from (usually) first data block on the device. */
 
@@ -1474,15 +1471,13 @@ U_ufs_statvfs(struct super_block* sb, struct statvfs* buf)
     unsigned flags = UFS_SB(sb)->s_flags;
 
     struct ufs_super_block_first*  usb1;
-    struct ufs_super_block_second* usb2;
     struct ufs_super_block_third*  usb3;
 
     lock_kernel();
 
     usb1 = ubh_get_usb_first(uspi);
-    usb2 = ubh_get_usb_second(uspi);
     usb3 = ubh_get_usb_third(uspi);
-    
+
     if ((flags & UFS_TYPE_MASK) == UFS_TYPE_UFS2) {
         /* buf->f_type = UFS2_MAGIC; */
         buf->f_blocks = fs64_to_cpu(sb, usb3->fs_un1.fs_u2.fs_dsize);

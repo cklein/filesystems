@@ -260,6 +260,12 @@ static inline void ll_rw_block(int rw, int nr, struct buffer_head* bhs[])
 #define buffer_dirty(x)       0
 #define set_buffer_mapped     buffer_noop
 
+#ifdef __LP64__
+#define BITS_PER_LONG 64
+#else
+#define BITS_PER_LONG 32
+#endif /* CONFIG_64BIT */
+
 /****** bit and math stuff ******/
 
 #define BITOP_WORD(nr)   ((nr) / BITS_PER_LONG)
@@ -418,6 +424,7 @@ found_middle:
     return result + ffz(tmp);
 }
 
+#if defined (__i386__) || defined (__x86_64__)
 #define do_div(n, base)                     \
 ({                                  \
     unsigned long __upper, __low, __high, __mod, __base;    \
@@ -433,6 +440,21 @@ found_middle:
     asm("":"=A" (n) : "a" (__low), "d" (__high));       \
     __mod;                          \
 })
+#elif defined (__arm64__)
+#define do_div(n, base)                                 \
+({                                                      \
+    unsigned long long __result;                        \
+    unsigned long __mod, __base;                        \
+    __base = (base);                                    \
+    asm(                                                \
+        "udiv %0, %2, %3 \n\t"                          \
+        "msub %1, %0, %3, %2"                           \
+        : "=&r" (__result), "=&r" (__mod)               \
+        : "r" ((unsigned long long)(n)), "r" (__base)); \
+    n = __result;                                       \
+    __mod;                                              \
+})
+#endif
 
 /****** endian stuff ******/
 

@@ -83,14 +83,12 @@ unixfs_inodelayer_fini(void)
                     "*** warning: ihash terminated when not empty (%lu)\n",
                     (unsigned long)ihash_count);
 
-            int node_index = 0;
             u_long ihash_index = 0;
             for (; ihash_index < ihash_mask; ihash_index++) {
                 struct inode* ip;
                 LIST_FOREACH(ip, &ihash_table[ihash_index], I_hashlink) {
                     fprintf(stderr, "*** warning: inode %llu still present\n",
                             (ino64_t)ip->I_number);
-                    node_index++;
                 }
             }
         }
@@ -267,7 +265,6 @@ unixfs_inodelayer_dump(unixfs_inodelayer_iterator_t it)
 {
     pthread_mutex_lock(&ihash_lock);
 
-    int node_index = 0;
     u_long ihash_index = 0;
 
     for (; ihash_index < ihash_mask; ihash_index++) {
@@ -275,7 +272,6 @@ unixfs_inodelayer_dump(unixfs_inodelayer_iterator_t it)
         LIST_FOREACH(ip, &ihash_table[ihash_index], I_hashlink) {
             if (it(ip, ip->I_private) != 0)
                 goto out;
-            node_index++;
         }
     }
 
